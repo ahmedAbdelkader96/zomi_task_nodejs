@@ -40,17 +40,7 @@ app.use("/blogs", blogsRouter);
 
 
 
-// Google OAuth routes
-app.get('/auth/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] })
-);
 
-app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/' }),
-  (req, res) => {
-    res.redirect('/profile');
-  }
-);
 
 app.get('/profile', (req, res) => {
   if (!req.isAuthenticated()) {

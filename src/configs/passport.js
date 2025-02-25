@@ -5,7 +5,7 @@ const User = require('../models/user');
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: 'https://zomi-task-nodejs-three.vercel.app/auth/google/callback'
+    callbackURL: 'https://zomi-task-nodejs-three.vercel.app/user/login/google/callback'
   },
   async (accessToken, refreshToken, profile, done) => {
     try {
@@ -15,7 +15,8 @@ passport.use(new GoogleStrategy({
           googleId: profile.id,
           email: profile.emails[0].value,
           name: profile.displayName,
-          authenticationType: 'google'
+          authenticationType: 'google',
+          password: ""
         });
       }
       done(null, user);

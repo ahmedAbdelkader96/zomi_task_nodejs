@@ -4,15 +4,12 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const morgan = require("morgan");
-const passport = require('passport');
-const session = require('express-session');
 const connectDB = require("./configs/db");
 
 const app = express();
 const userRouter = require('./routes/user');
 const productsRouter = require("./routes/products");
 const blogsRouter = require('./routes/blogs');
-require('./configs/passport-setup'); // Passport configuration
 
 
 // Connect to the database
@@ -26,10 +23,7 @@ app.use(bodyParser.json());
 
 const port = process.env.PORT || 3001;
 
-// Passport middleware
-app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: true }));
-app.use(passport.initialize());
-app.use(passport.session());
+
 
 // Routes
 app.use("/user", userRouter);

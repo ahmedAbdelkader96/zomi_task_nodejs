@@ -54,7 +54,7 @@ app.get('/auth/google/callback',
 app.get('/profile', (req, res) => {
   if (!req.isAuthenticated()) {
     return res.redirect('/auth/google');
-  }
+  } 
   res.send(`Hello, ${req.user.displayName}`);
 });
 

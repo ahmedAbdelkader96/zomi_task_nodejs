@@ -10,6 +10,8 @@ const connectDB = require("./configs/db");
 const app = express();
 require('./configs/passport');
 
+app.use(cors());
+
 const userRouter = require('./routes/user');
 const productsRouter = require("./routes/products");
 const blogsRouter = require('./routes/blogs');
@@ -19,7 +21,6 @@ const blogsRouter = require('./routes/blogs');
 connectDB();
 
 // Middlewares
-app.use(cors());
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());

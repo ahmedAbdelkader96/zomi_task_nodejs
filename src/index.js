@@ -36,6 +36,34 @@ app.use("/user", userRouter);
 app.use("/products", productsRouter);
 app.use("/blogs", blogsRouter);
 
+
+
+
+// Google OAuth routes
+app.get('/auth/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+
+app.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/' }),
+  (req, res) => {
+    res.redirect('/profile');
+  }
+);
+
+app.get('/profile', (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.redirect('/auth/google');
+  }
+  res.send(`Hello, ${req.user.displayName}`);
+});
+
+app.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/');
+});
+
+
 // Root route
 app.get("/", (req, res) => {
   res.json({ message: "Hello World!" });

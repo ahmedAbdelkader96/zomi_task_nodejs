@@ -14,18 +14,19 @@ const productsRouter = require("./routes/products");
 const blogsRouter = require('./routes/blogs');
 require('./configs/passport-setup'); // Passport configuration
 
-const port = process.env.PORT || 3001;
-
-app.use(cors());
-app.use(morgan("dev"));
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 
 // Connect to the database
 connectDB();
 
 // Middlewares
+app.use(cors());
+app.use(morgan("dev"));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
+const port = process.env.PORT || 3001;
+
+// Passport middleware
 app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());

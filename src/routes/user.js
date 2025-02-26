@@ -56,7 +56,7 @@ router.get('/login/google/callback',
       
     // });
 
-    res.status(200).json({message: "Verified"});
+    res.status(200);
     res.redirect(`zomi://login?id=${id}&token=${token}&refreshToken=${refreshToken}`);
 
 

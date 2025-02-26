@@ -22,22 +22,28 @@ router.get('/login/google/callback',
   (req, res) => {
     // Print Google account details
 
+    const email = req.user.email; 
+    const name = req.user.name;
+    const googleId = req.user.googleId;
+    const id = req.user.id;
+    
+
   const token = jwt.sign(
-      { email: user.email, userId: user.id },
+      { email: email, userId: id },
       process.env.JWT_KEY,
       { expiresIn: "1h" }
     );
 
     const refreshToken = jwt.sign(
-      { email: user.email, userId: user.id },
+      { email: email, userId: id },
       process.env.JWT_REFRESH_KEY,
       { expiresIn: "7d" }
     );
     
     res.status(200).json({
-      googleId: req.user.googleId,
-      displayName: req.user.name,
-      email: req.user.email,
+      googleId: googleId,
+      name: name,
+      email: email,
       token:token,
       refreshToken:refreshToken
       

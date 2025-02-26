@@ -11,6 +11,7 @@
       const id = urlParams.get('id');
       const token = urlParams.get('token');
       const refreshToken = urlParams.get('refreshToken');
+      window.close();
       window.location.href = `zomi://login?id=${id}&token=${token}&refreshToken=${refreshToken}`;
     //   setTimeout(() => {
     //     window.close();

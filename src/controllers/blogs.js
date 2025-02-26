@@ -34,7 +34,7 @@ async function get_blogs(req, res, next) {
 }
 
 async function get_blog(req, res, next) {
-  const id = req.params.id;
+  const id = req.query.id;
 
   if (!id) {
     return res.status(400).json({ message: "ID parameter is required" });

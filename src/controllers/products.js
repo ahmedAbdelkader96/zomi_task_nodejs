@@ -35,7 +35,7 @@ async function get_products(req, res, next) {
 
 async function get_product(req, res, next) {
 
-  const id = req.params.id;
+  const id = req.query.id;
 
   if (!id) {
     return res.status(400).json({ message: "ID parameter is required" });

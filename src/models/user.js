@@ -24,6 +24,9 @@ const userSchema = mongoose.Schema({
         enum: ['email', 'google'],
         required: true
     }
+},
+{
+    timestamps: true
 });
 
 module.exports = mongoose.model('User', userSchema);

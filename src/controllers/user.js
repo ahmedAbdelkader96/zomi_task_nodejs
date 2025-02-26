@@ -48,8 +48,8 @@ async function signup(req, res, next) {
       email: email,
       password: hash,
       name: name,
-      authenticationType: 'email'  
-    });
+      authenticationType: 'email'
+        });
 
     const result = await user.save();
 

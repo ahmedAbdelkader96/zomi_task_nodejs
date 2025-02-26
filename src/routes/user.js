@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const passport = require('passport');
+const app = express();
 
 const UserController = require('../controllers/user');
 const checkAuth = require('../middlewares/check-auth');
@@ -17,7 +18,12 @@ router.get('/login/google',
 router.get('/login/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   (req, res) => {
-    res.redirect('/profile');
+    // Print Google account details
+    res.status(200).json({
+      googleId: req.user.googleId,
+      displayName: req.user.name,
+      email: req.user.email
+    });
   }
 );
 

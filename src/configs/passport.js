@@ -11,13 +11,14 @@ passport.use(new GoogleStrategy({
     try {
       let user = await User.findOne({ googleId: profile.id });
       if (!user) {
-        user = await User.create({
+        user = new User({
           googleId: profile.id,
           email: profile.emails[0].value,
           name: profile.displayName,
           authenticationType: 'google',
           password: ""
         });
+        await user.save();
       }
       done(null, user);
     } catch (err) {

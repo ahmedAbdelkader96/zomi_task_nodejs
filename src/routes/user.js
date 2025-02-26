@@ -55,9 +55,9 @@ router.get('/login/google/callback',
     //   refreshToken:refreshToken
       
     // });
-
     res.status(200);
     res.redirect(`zomi://login?id=${id}&token=${token}&refreshToken=${refreshToken}`);
+    res.status(200);
 
 
   }

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirect</title>
+  <script>
+    window.onload = function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get('id');
+      const token = urlParams.get('token');
+      const refreshToken = urlParams.get('refreshToken');
+      const redirectUrl = `zomi://login?id=${id}&token=${token}&refreshToken=${refreshToken}`;
+
+      // Open the custom URL scheme in a new tab
+      const newWindow = window.open(redirectUrl, '_blank');
+
+      // Check if the new window was successfully opened
+      if (newWindow) {
+        // Close the current tab
+        window.close();
+      } else {
+        // If the new window could not be opened, redirect in the same tab
+        window.location.href = redirectUrl;
+      }
+    };
+  </script>
+</head>
+<body>
+  <p>Redirecting...</p>
+</body>
+</html>

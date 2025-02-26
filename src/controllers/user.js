@@ -7,6 +7,33 @@ const jwt = require("jsonwebtoken");
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex = /^(?=.*[0-9]{6})(?=.*[a-zA-Z]{3}).{9,}$/;
 
+
+
+async function get_user(req, res, next) {
+  const id = req.body.id;
+
+  if (!id) {
+    return res.status(400).json({ message: "ID parameter is required" });
+  }
+
+  User.findById(id)
+    .exec()
+    .then((doc) => {
+      console.log("From database", doc);
+      if (doc) {
+        res.status(200).json(doc);
+      } else {
+        res
+          .status(400)
+          .json({ message: "No valid entry found for provided ID" });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).json({ message: err });
+    });
+}
+
 async function signup(req, res, next) {
   try {
     const { name , email, password } = req.body;
@@ -202,6 +229,7 @@ async function delete_user(req, res, next) {
 }
 
 module.exports = {
+  get_user,
   signup,
   login,
   renew_token,

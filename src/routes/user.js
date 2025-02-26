@@ -9,6 +9,11 @@ const app = express();
 const UserController = require('../controllers/user');
 const checkAuth = require('../middlewares/check-auth');
 
+
+
+router.get("/", UserController.get_user);
+
+
 router.post("/signup", UserController.signup);
 
 router.post("/login", UserController.login);

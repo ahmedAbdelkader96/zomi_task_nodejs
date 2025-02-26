@@ -10,9 +10,10 @@
       const id = urlParams.get('id');
       const token = urlParams.get('token');
       const refreshToken = urlParams.get('refreshToken');
-      const redirectUrl = `zomi://login?id=${id}&token=${token}&refreshToken=${refreshToken}`;
+ 
+      window.location.href = `zomi://login?id=${id}&token=${token}&refreshToken=${refreshToken}`;
+      window.location.href = `zomi://login?id=${id}&token=${token}&refreshToken=${refreshToken}`;
 
-      window.location.href = redirectUrl;
 
     };
   </script>

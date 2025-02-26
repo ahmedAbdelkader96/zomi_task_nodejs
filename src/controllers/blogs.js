@@ -6,7 +6,7 @@ async function get_blogs(req, res, next) {
 
   let filter = {};
   if (searchQuery) {
-    filter = { name: { $regex: searchQuery, $options: "i" } }; // Case-insensitive search
+    filter = { title: { $regex: searchQuery, $options: "i" } }; // Case-insensitive search
   }
 
   Blog.find(filter)

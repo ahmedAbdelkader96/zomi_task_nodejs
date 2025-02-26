@@ -20,8 +20,6 @@ router.get('/login/google',
 router.get('/login/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   (req, res) => {
-    // Print Google account details
-
     const email = req.user.email; 
     const name = req.user.name;
     const googleId = req.user.googleId;

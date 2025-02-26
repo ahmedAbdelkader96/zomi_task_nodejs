@@ -49,12 +49,15 @@ router.get('/login/google/callback',
       createdAt	: new Date(),  
     });
 
-    res.status(200).json({
-      user:user,
-      token:token,
-      refreshToken:refreshToken
+    // res.status(200).json({
+    //   user:user,
+    //   token:token,
+    //   refreshToken:refreshToken
       
-    });
+    // });
+
+    res.redirect(`myapp://login?token=${token}&refreshToken=${refreshToken}`);
+
   }
 );
 

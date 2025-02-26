@@ -17,8 +17,8 @@ async function get_blogs(req, res, next) {
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).json({
-        error: err,
+      res.status(400).json({
+        message: err,
       });
     });
 
@@ -48,13 +48,13 @@ async function get_blog(req, res, next) {
         res.status(200).json(doc);
       } else {
         res
-          .status(404)
+          .status(400)
           .json({ message: "No valid entry found for provided ID" });
       }
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).json({ error: err });
+      res.status(400).json({ message: err });
     });
 }
 
@@ -90,15 +90,15 @@ async function create_blog(req, res, next) {
   blog
     .save()
     .then((result) => {
-      res.status(201).json({
+      res.status(200).json({
         message: "Created blog successfully",
         createdBlog: result,
       });
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).json({
-        error: err,
+      res.status(400).json({
+        message: err,
       });
     });
 }
@@ -135,11 +135,11 @@ async function update_blog(req, res, next) {
     if (result) {
       res.status(200).json(result);
     } else {
-      res.status(404).json({ message: "No valid entry found for provided ID" });
+      res.status(400).json({ message: "No valid entry found for provided ID" });
     }
   } catch (err) {
     console.log(err);
-    res.status(500).json({ error: err });
+    res.status(400).json({ message: err });
   }
 }
 
@@ -164,8 +164,8 @@ async function delete_blog(req, res, next) {
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).json({
-        error: err,
+      res.status(400).json({
+        message: err,
       });
     });
 }

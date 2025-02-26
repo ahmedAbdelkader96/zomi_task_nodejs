@@ -55,7 +55,7 @@ async function signup(req, res, next) {
 
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
-      return res.status(401).json({ message: "Password is incorrect !" });
+      return res.status(400).json({ message: "Password is incorrect !" });
     }
 
     const token = jwt.sign(
@@ -79,7 +79,7 @@ async function signup(req, res, next) {
 
   } catch (err) {
     console.log(err);
-    res.status(500).json({ error: err });
+    res.status(400).json({ message: err });
   }
 }
 
@@ -108,13 +108,13 @@ async function login(req, res, next) {
     const user = await User.findOne({ email: email }).exec();
     if (!user) {
       return res
-        .status(401)
+        .status(400)
         .json({ message: "No account is linked to this email" });
     }
 
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
-      return res.status(401).json({ message: "Password is incorrect !" });
+      return res.status(400).json({ message: "Password is incorrect !" });
     }
 
     const token = jwt.sign(
@@ -137,7 +137,7 @@ async function login(req, res, next) {
     });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ error: err });
+    res.status(400).json({ message: err });
   }
 }
 
@@ -150,19 +150,31 @@ async function renew_token(req, res, next) {
 
   try {
     const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY);
+
+const email = decoded.email;
+const id = decoded._id;
+
     const newToken = jwt.sign(
-      { email: decoded.email, userId: decoded.userId },
+      { email: email, userId: id },
       process.env.JWT_KEY,
       { expiresIn: "1h" }
     );
 
+    const newRefreshToken = jwt.sign(
+      { email: email, userId: id },
+      process.env.JWT_REFRESH_KEY,
+      { expiresIn: "7d" }
+    );
+
+
     return res.status(200).json({
       message: "Token renewed",
       token: newToken,
+      refreshToken: newRefreshToken,
     });
   } catch (err) {
     console.log(err);
-    res.status(401).json({ message: "Auth failed" });
+    res.status(400).json({ message: "Auth failed" });
   }
 }
 
@@ -180,11 +192,11 @@ async function delete_user(req, res, next) {
     if (result.deletedCount > 0) {
       res.status(200).json({ message: "User deleted" });
     } else {
-      res.status(404).json({ message: "User not found" });
+      res.status(400).json({ message: "User not found" });
     }
   } catch (err) {
     console.log(err);
-    res.status(500).json({ error: err });
+    res.status(400).json({ message: err });
   }
    
 }

@@ -17,8 +17,8 @@ async function get_products(req, res, next) {
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).json({
-        error: err,
+      res.status(400).json({
+        message: err,
       });
     });
 
@@ -48,13 +48,13 @@ async function get_product(req, res, next) {
         res.status(200).json(doc);
       } else {
         res
-          .status(404)
+          .status(400)
           .json({ message: "No valid entry found for provided ID" });
       }
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).json({ error: err });
+      res.status(400).json({ message: err });
     });
 }
 
@@ -84,15 +84,15 @@ async function create_product(req, res, next) {
   product
     .save()
     .then((result) => {
-      res.status(201).json({
+      res.status(200).json({
         message: "Created product successfully",
         createdProduct: result,
       });
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).json({
-        error: err,
+      res.status(400).json({
+        message: err,
       });
     });
 }
@@ -132,11 +132,11 @@ async function update_product(req, res, next) {
     if (result) {
       res.status(200).json(result);
     } else {
-      res.status(404).json({ message: "No valid entry found for provided ID" });
+      res.status(400).json({ message: "No valid entry found for provided ID" });
     }
   } catch (err) {
     console.log(err);
-    res.status(500).json({ error: err });
+    res.status(400).json({ error: err });
   }
 }
 
@@ -154,14 +154,14 @@ async function delete_product(req, res, next) {
         res.status(200).json(result);
       } else {
         res
-          .status(404)
+          .status(400)
           .json({ message: "No valid entry found for provided ID" });
       }
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).json({
-        error: err,
+      res.status(400).json({
+        message: err,
       });
     });
 }

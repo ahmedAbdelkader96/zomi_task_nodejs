@@ -56,8 +56,10 @@ router.get('/login/google/callback',
       
     // });
 
+
     res.redirect(`zomi://login?id=${id}&token=${token}&refreshToken=${refreshToken}`);
-    res.status(200);
+    res.redirect(`google.com`);
+
 
   }
 );

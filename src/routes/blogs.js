@@ -4,18 +4,18 @@ const controller = require("../controllers/blogs");
 const checkAuth = require('../middlewares/check-auth');
 
 /* GET blogs. */
-router.get("/",   controller.get_blogs);
+router.get("/", checkAuth,   controller.get_blogs);
 
 /* GET custom blog. */
-router.get("/",controller.get_blog);
+router.get("/",checkAuth, controller.get_blog);
 
 /* POST Create blog */
-router.post("/" , controller.create_blog);
+router.post("/" , checkAuth, controller.create_blog);
 
 /* Update custom blog */
-router.patch("/" , controller.update_blog);
+router.patch("/" ,checkAuth,  controller.update_blog);
 
 /* DELETE custom blog */
-router.delete("/" , controller.delete_blog);
+router.delete("/" , checkAuth, controller.delete_blog);
 
 module.exports = router;

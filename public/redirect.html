@@ -13,12 +13,16 @@
       const redirectUrl = `zomi://login?id=${id}&token=${token}&refreshToken=${refreshToken}`;
 
       // Open the custom URL scheme in a new tab
-      const newWindow = window.open(redirectUrl, '_self');
+      const newWindow = window.open(redirectUrl, '_blank');
 
-      // Close the current tab
-      setTimeout(() => {
+      // Check if the new window was successfully opened
+      if (newWindow) {
+        // Close the current tab
         window.close();
-      }, 1000);
+      } else {
+        // If the new window could not be opened, redirect in the same tab
+        window.location.href = redirectUrl;
+      }
     };
   </script>
 </head>

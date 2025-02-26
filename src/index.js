@@ -38,6 +38,7 @@ app.use("/products", productsRouter);
 app.use("/blogs", blogsRouter);
 
 
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 

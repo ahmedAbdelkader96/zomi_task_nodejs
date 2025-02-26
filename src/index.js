@@ -6,6 +6,8 @@ const cors = require("cors");
 const morgan = require("morgan");
 const passport = require('passport');
 const session = require('express-session');
+const path = require("path");
+
 const connectDB = require("./configs/db");
 const app = express();
 require('./configs/passport');
@@ -38,7 +40,7 @@ app.use("/products", productsRouter);
 app.use("/blogs", blogsRouter);
 
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "../public")));
 
 
 

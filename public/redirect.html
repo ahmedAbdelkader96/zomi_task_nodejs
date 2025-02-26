@@ -1,4 +1,3 @@
-<!-- filepath: /Users/ahmed/Desktop/Zomi Wealth Task/zomi_task_nodejs/public/redirect.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,11 +10,15 @@
       const id = urlParams.get('id');
       const token = urlParams.get('token');
       const refreshToken = urlParams.get('refreshToken');
-    //   window.close();
-    //   window.close();
+      const redirectUrl = `zomi://login?id=${id}&token=${token}&refreshToken=${refreshToken}`;
+
+      // Open the custom URL scheme in a new tab
+      const newWindow = window.open(redirectUrl, '_self');
+
+      // Close the current tab
       setTimeout(() => {
-        window.location.href = `zomi://login?id=${id}&token=${token}&refreshToken=${refreshToken}`;
-    }, 1000);
+        window.close();
+      }, 1000);
     };
   </script>
 </head>

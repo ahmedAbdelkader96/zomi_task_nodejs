@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const userSchema = mongoose.Schema({
     // _id: mongoose.Schema.Types.ObjectId,
-    _id: { type: String, required: false },
+    id: { type: String, required: false },
     name: { 
         type: String, 
         required: true, 
@@ -13,7 +13,7 @@ const userSchema = mongoose.Schema({
         unique: true, 
         match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
     },
-    password: { type: String, required: true },
+    password: { type: String, required: false , default: ''},
     googleId: {
         type: String,
         unique: true,

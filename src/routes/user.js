@@ -41,7 +41,7 @@ router.get('/login/google/callback',
     
 
     const user = new User({
-      id: id,
+      _id: id,
       email: email,
       name: name,
       googleId: googleId,

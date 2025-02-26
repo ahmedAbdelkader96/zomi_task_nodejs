@@ -44,7 +44,7 @@ async function signup(req, res, next) {
     const id = new mongoose.Types.ObjectId();
 
     const user = new User({
-      id: id,
+      _id: id,
       email: email,
       password: hash,
       name: name,
@@ -174,7 +174,9 @@ async function delete_user(req, res, next) {
       return res.status(400).json({ message: "UserId is required" });
     }
 
-    const result = await User.deleteOne({ id: id }).exec();
+
+
+    const result = await User.deleteOne({ _id: id }).exec();
     if (result.deletedCount > 0) {
       res.status(200).json({ message: "User deleted" });
     } else {

@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 
 const blogSchema = mongoose.Schema({
     _id: { type: String, required: false },
-    // id: { type: String, required: true },
     title: { type: String, required: true },
     describtion: { type: String, required: true },
     date: { type: String, required: true },

@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const passport = require('passport');
 const jwt = require("jsonwebtoken");
+const User = require('../models/user'); 
 
 const app = express();
 
@@ -38,8 +39,18 @@ router.get('/login/google/callback',
       { expiresIn: "7d" }
     );
     
+
+    const user = new User({
+      id: id,
+      email: email,
+      name: name,
+      googleId: googleId,
+      authenticationType: 'google',
+      createdAt	: new Date(),  
+    });
+
     res.status(200).json({
-      user:req.user,
+      user:user,
       token:token,
       refreshToken:refreshToken
       

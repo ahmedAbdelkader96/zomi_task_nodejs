@@ -72,6 +72,7 @@ async function signup(req, res, next) {
 
     return res.status(200).json({
       message: "User Created successfully",
+      user: result,
       token: token,
       refreshToken: refreshToken,
     });
@@ -130,6 +131,7 @@ async function login(req, res, next) {
 
     return res.status(200).json({
       message: "Auth successful",
+      user: user,
       token: token,
       refreshToken: refreshToken,
     });

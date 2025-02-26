@@ -39,9 +39,7 @@ router.get('/login/google/callback',
     );
     
     res.status(200).json({
-      googleId: googleId,
-      name: name,
-      email: email,
+      user:req.user,
       token:token,
       refreshToken:refreshToken
       

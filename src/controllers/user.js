@@ -71,7 +71,7 @@ async function signup(req, res, next) {
     const id = new mongoose.Types.ObjectId();
 
     const user = new User({
-      _id: id,
+      id: id,
       email: email,
       password: hash,
       name: name,
@@ -86,13 +86,13 @@ async function signup(req, res, next) {
     }
 
     const token = jwt.sign(
-      { email: user.email, userId: user._id },
+      { email: user.email, id: user.id },
       process.env.JWT_KEY,
       { expiresIn: "1h" }
     );
 
     const refreshToken = jwt.sign(
-      { email: user.email, userId: user._id },
+      { email: user.email, id: user.id },
       process.env.JWT_REFRESH_KEY,
       { expiresIn: "7d" }
     );
@@ -145,13 +145,13 @@ async function login(req, res, next) {
     }
 
     const token = jwt.sign(
-      { email: user.email, userId: user._id },
+      { email: user.email, userId: user.id },
       process.env.JWT_KEY,
       { expiresIn: "1h" }
     );
 
     const refreshToken = jwt.sign(
-      { email: user.email, userId: user._id },
+      { email: user.email, id: user.id },
       process.env.JWT_REFRESH_KEY,
       { expiresIn: "7d" }
     );
@@ -179,16 +179,16 @@ async function renew_token(req, res, next) {
     const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY);
 
 const email = decoded.email;
-const id = decoded._id;
+const id = decoded.id;
 
     const newToken = jwt.sign(
-      { email: email, userId: id },
+      { email: email, id: id },
       process.env.JWT_KEY,
       { expiresIn: "1h" }
     );
 
     const newRefreshToken = jwt.sign(
-      { email: email, userId: id },
+      { email: email, id: id },
       process.env.JWT_REFRESH_KEY,
       { expiresIn: "7d" }
     );
@@ -215,7 +215,7 @@ async function delete_user(req, res, next) {
 
 
 
-    const result = await User.deleteOne({ _id: id }).exec();
+    const result = await User.deleteOne({ id: id }).exec();
     if (result.deletedCount > 0) {
       res.status(200).json({ message: "User deleted" });
     } else {

@@ -183,12 +183,12 @@ async function renew_token(req, res, next) {
 // const id = decoded.userId;
 
     const newToken = jwt.sign(
-      { email: decoded.email, userId: idecoded.userIdd },
+      { email: decoded.email, userId: decoded.userId },
       process.env.JWT_KEY,
       { expiresIn: "1h" }
     );
 
-    const newRefreshToken = userId.sign(
+    const newRefreshToken = jwt.sign(
       { email: decoded.email, id: decoded.userId },
       process.env.JWT_REFRESH_KEY,
       { expiresIn: "7d" }

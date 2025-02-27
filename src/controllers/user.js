@@ -14,7 +14,7 @@ async function get_user(req, res, next) {
   //   return res.status(400).json({ message: "ID parameter is required" });
   // }
 
-  User.findById(id)
+  User.findById(id).select('-password')
     .exec()
     .then((doc) => {
       console.log("From database", doc);
@@ -43,6 +43,10 @@ async function sign_google(req, res, next) {
     const user = await User.findOne({ email: email }).exec();
 
     if (user) {
+
+    const userObject = user.toObject();
+    delete userObject.password;
+
       const token = jwt.sign(
         { email: user.email, userId: user._id },
         process.env.JWT_KEY,
@@ -57,7 +61,7 @@ async function sign_google(req, res, next) {
 
       return res
         .status(200)
-        .json({ user: user, token: token, refreshToken: refreshToken });
+        .json({ user: userObject, token: token, refreshToken: refreshToken });
     } else {
       const id = new mongoose.Types.ObjectId();
 
@@ -70,6 +74,10 @@ async function sign_google(req, res, next) {
       });
       const result = await newUser.save();
 
+
+      const userObject = newUser.toObject();
+      delete userObject.password;
+
       const token = jwt.sign(
         { email: email, userId: id },
         process.env.JWT_KEY,
@@ -83,7 +91,7 @@ async function sign_google(req, res, next) {
       );
       return res
         .status(200)
-        .json({ user: result, token: token, refreshToken: refreshToken });
+        .json({ user: userObject, token: token, refreshToken: refreshToken });
     }
   } catch (err) {
     console.log(err);
@@ -137,10 +145,10 @@ async function signup(req, res, next) {
 
     const result = await user.save();
 
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) {
-      return res.status(400).json({ message: "Password is incorrect !" });
-    }
+    const userObject = result.toObject();
+    delete userObject.password;
+
+
 
     const token = jwt.sign(
       { email: user.email, userId: user._id },
@@ -156,7 +164,7 @@ async function signup(req, res, next) {
 
     return res.status(200).json({
       message: "User Created successfully",
-      user: result,
+      user: userObject,
       token: token,
       refreshToken: refreshToken,
     });
@@ -200,6 +208,9 @@ async function login(req, res, next) {
       return res.status(400).json({ message: "Password is incorrect !" });
     }
 
+    const userObject = user.toObject();
+    delete userObject.password;
+
     const token = jwt.sign(
       { email: user.email, userId: user._id },
       process.env.JWT_KEY,
@@ -214,7 +225,7 @@ async function login(req, res, next) {
 
     return res.status(200).json({
       message: "Auth successful",
-      user: user,
+      user: userObject,
       token: token,
       refreshToken: refreshToken,
     });

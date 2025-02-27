@@ -11,7 +11,7 @@ const checkAuth = require('../middlewares/check-auth');
 
 
 
-router.get("/", UserController.get_user);
+router.get("/:id", UserController.get_user);
 
 
 router.post("/check_google", UserController.sign_google);

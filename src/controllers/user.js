@@ -8,11 +8,11 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex = /^(?=.*[0-9]{6})(?=.*[a-zA-Z]{3}).{9,}$/;
 
 async function get_user(req, res, next) {
-  const id = req.query.id;
+  const id = req.params.id;
 
-  if (!id) {
-    return res.status(400).json({ message: "ID parameter is required" });
-  }
+  // if (!id) {
+  //   return res.status(400).json({ message: "ID parameter is required" });
+  // }
 
   User.findById(id)
     .exec()

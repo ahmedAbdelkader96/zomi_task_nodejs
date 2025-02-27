@@ -17,9 +17,9 @@ router.get("/:id", UserController.get_user);
 router.post("/check_google", UserController.sign_google);
 
 
-router.post("/signup", UserController.signup);
+router.post("/signup_email", UserController.signup);
 
-router.post("/login", UserController.login);
+router.post("/login_email", UserController.login);
 
 
 router.get('/login/google',

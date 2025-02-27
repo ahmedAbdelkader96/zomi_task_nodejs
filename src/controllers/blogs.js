@@ -118,7 +118,7 @@ async function update_blog(req, res, next) {
   //   return res.status(400).json({ message: "ID parameter is required" });
   // }
   if (!title && !description && !date && !image) {
-    return res.status(400).json({ message: "You must provide at least one param to update(title,describtion,date,image)" });
+    return res.status(400).json({ message: "You must provide at least one param to update(title,description,date,image)" });
   }
 
 

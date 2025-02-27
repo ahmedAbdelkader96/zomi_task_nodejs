@@ -2,6 +2,7 @@ const User = require("../models/user");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+require('dotenv').config();
 
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

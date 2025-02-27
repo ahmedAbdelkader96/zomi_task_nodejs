@@ -2,13 +2,10 @@ const User = require("../models/user");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-require('dotenv').config();
-
+require("dotenv").config();
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex = /^(?=.*[0-9]{6})(?=.*[a-zA-Z]{3}).{9,}$/;
-
-
 
 async function get_user(req, res, next) {
   const id = req.query.id;
@@ -35,9 +32,63 @@ async function get_user(req, res, next) {
     });
 }
 
+async function sign_google(req, res, next) {
+  const { name, email, googleId } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ message: "Email parameter is required" });
+  }
+
+  const user = await User.findOne({ email: email }).exec();
+
+  if (user) {
+    const token = jwt.sign(
+      { email: user.email, userId: user._id },
+      process.env.JWT_KEY,
+      { expiresIn: "1h" }
+    );
+
+    const refreshToken = jwt.sign(
+      { email: user.email, userId: user._id },
+      process.env.JWT_REFRESH_KEY,
+      { expiresIn: "7d" }
+    );
+
+    return res
+      .status(200)
+      .json({ user: user, token: token, refreshToken: refreshToken });
+  } else {
+    const id = new mongoose.Types.ObjectId();
+
+    user = new User({
+      _id: id,
+      googleId: googleId,
+      email: email,
+      name: name,
+      authenticationType: "google",
+    });
+    const result = await user.save();
+
+    const token = jwt.sign(
+      { email: user.email, userId: user._id },
+      process.env.JWT_KEY,
+      { expiresIn: "1h" }
+    );
+
+    const refreshToken = jwt.sign(
+      { email: user.email, userId: user._id },
+      process.env.JWT_REFRESH_KEY,
+      { expiresIn: "7d" }
+    );
+    return res
+      .status(200)
+      .json({ user: user, token: token, refreshToken: refreshToken });
+  }
+}
+
 async function signup(req, res, next) {
   try {
-    const { name , email, password } = req.body;
+    const { name, email, password, googleId, authenticationType } = req.body;
 
     // Validate email and password
 
@@ -76,8 +127,9 @@ async function signup(req, res, next) {
       email: email,
       password: hash,
       name: name,
-      authenticationType: 'email'
-        });
+      authenticationType: authenticationType,
+      googleId: googleId,
+    });
 
     const result = await user.save();
 
@@ -104,7 +156,6 @@ async function signup(req, res, next) {
       token: token,
       refreshToken: refreshToken,
     });
-
   } catch (err) {
     console.log(err);
     res.status(400).json({ message: err });
@@ -179,8 +230,8 @@ async function renew_token(req, res, next) {
   try {
     const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY);
 
-// const email = decoded.email;
-// const id = decoded.userId;
+    // const email = decoded.email;
+    // const id = decoded.userId;
 
     const newToken = jwt.sign(
       { email: decoded.email, userId: decoded.userId },
@@ -193,7 +244,6 @@ async function renew_token(req, res, next) {
       process.env.JWT_REFRESH_KEY,
       { expiresIn: "7d" }
     );
-
 
     return res.status(200).json({
       message: "Token renewed",
@@ -214,8 +264,6 @@ async function delete_user(req, res, next) {
     //   return res.status(400).json({ message: "UserId is required" });
     // }
 
-
-
     const result = await User.deleteOne({ _id: id }).exec();
     if (result.deletedCount > 0) {
       res.status(200).json({ message: "User deleted" });
@@ -226,11 +274,11 @@ async function delete_user(req, res, next) {
     console.log(err);
     res.status(400).json({ message: err });
   }
-   
 }
 
 module.exports = {
   get_user,
+  sign_google,
   signup,
   login,
   renew_token,

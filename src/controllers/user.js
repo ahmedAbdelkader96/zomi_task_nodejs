@@ -33,57 +33,62 @@ async function get_user(req, res, next) {
 }
 
 async function sign_google(req, res, next) {
-  const { name, email, googleId } = req.body;
-
-  if (!email) {
-    return res.status(400).json({ message: "Email parameter is required" });
-  }
-
-  const user = await User.findOne({ email: email }).exec();
-
-  if (user) {
-    const token = jwt.sign(
-      { email: user.email, userId: user._id },
-      process.env.JWT_KEY,
-      { expiresIn: "1h" }
-    );
-
-    const refreshToken = jwt.sign(
-      { email: user.email, userId: user._id },
-      process.env.JWT_REFRESH_KEY,
-      { expiresIn: "7d" }
-    );
-
-    return res
-      .status(200)
-      .json({ user: user, token: token, refreshToken: refreshToken });
-  } else {
-    const id = new mongoose.Types.ObjectId();
-
-    user = new User({
-      _id: id,
-      googleId: googleId,
-      email: email,
-      name: name,
-      authenticationType: "google",
-    });
-    const result = await user.save();
-
-    const token = jwt.sign(
-      { email: user.email, userId: user._id },
-      process.env.JWT_KEY,
-      { expiresIn: "1h" }
-    );
-
-    const refreshToken = jwt.sign(
-      { email: user.email, userId: user._id },
-      process.env.JWT_REFRESH_KEY,
-      { expiresIn: "7d" }
-    );
-    return res
-      .status(200)
-      .json({ user: user, token: token, refreshToken: refreshToken });
-  }
+ try {
+   const { name, email, googleId } = req.body;
+ 
+   if (!email) {
+     return res.status(400).json({ message: "Email parameter is required" });
+   }
+ 
+   const user = await User.findOne({ email: email }).exec();
+ 
+   if (user) {
+     const token = jwt.sign(
+       { email: user.email, userId: user._id },
+       process.env.JWT_KEY,
+       { expiresIn: "1h" }
+     );
+ 
+     const refreshToken = jwt.sign(
+       { email: user.email, userId: user._id },
+       process.env.JWT_REFRESH_KEY,
+       { expiresIn: "7d" }
+     );
+ 
+     return res
+       .status(200)
+       .json({ user: user, token: token, refreshToken: refreshToken });
+   } else {
+     const id = new mongoose.Types.ObjectId();
+ 
+     newUser = new User({
+       _id: id,
+       googleId: googleId,
+       email: email,
+       name: name,
+       authenticationType: "google",
+     });
+     const result = await newUser.save();
+ 
+     const token = jwt.sign(
+       { email:  email, userId: id },
+       process.env.JWT_KEY,
+       { expiresIn: "1h" }
+     );
+ 
+     const refreshToken = jwt.sign(
+       { email: email, userId: id },
+       process.env.JWT_REFRESH_KEY,
+       { expiresIn: "7d" }
+     );
+     return res
+       .status(200)
+       .json({ user: result, token: token, refreshToken: refreshToken });
+   }
+ } catch (err) {
+  console.log(err);
+  res.status(400).json({ message: err });
+}
 }
 
 async function signup(req, res, next) {

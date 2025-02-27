@@ -60,15 +60,15 @@ async function get_blog(req, res, next) {
 
 async function create_blog(req, res, next) {
   const title = req.body.title;
-  const describtion = req.body.describtion;
+  const description = req.body.description;
   const date = req.body.date;
   const image = req.body.image;
 
   if (!title) {
     return res.status(400).json({ message: "Title is required" });
   }
-  if (!describtion) {
-    return res.status(400).json({ message: "Describtion is required" });
+  if (!description) {
+    return res.status(400).json({ message: "Description is required" });
   }
   if (!date) {
     return res.status(400).json({ message: "Date is required" });
@@ -82,7 +82,7 @@ async function create_blog(req, res, next) {
   const blog = new Blog({
     _id: id,
     title: req.body.title,
-    describtion: req.body.describtion,
+    description: req.body.description,
     date: req.body.date,
     image: req.body.image,
   });

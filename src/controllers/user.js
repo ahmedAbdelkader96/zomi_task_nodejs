@@ -72,7 +72,7 @@ async function signup(req, res, next) {
     const id = new mongoose.Types.ObjectId();
 
     const user = new User({
-      id: id,
+      _id: id,
       email: email,
       password: hash,
       name: name,
@@ -87,13 +87,13 @@ async function signup(req, res, next) {
     }
 
     const token = jwt.sign(
-      { email: user.email, id: user.id },
+      { email: user.email, userId: user._id },
       process.env.JWT_KEY,
       { expiresIn: "1h" }
     );
 
     const refreshToken = jwt.sign(
-      { email: user.email, id: user.id },
+      { email: user.email, userId: user._id },
       process.env.JWT_REFRESH_KEY,
       { expiresIn: "7d" }
     );
@@ -146,13 +146,13 @@ async function login(req, res, next) {
     }
 
     const token = jwt.sign(
-      { email: user.email, userId: user.id },
+      { email: user.email, userId: user._id },
       process.env.JWT_KEY,
       { expiresIn: "1h" }
     );
 
     const refreshToken = jwt.sign(
-      { email: user.email, id: user.id },
+      { email: user.email, userId: user._id },
       process.env.JWT_REFRESH_KEY,
       { expiresIn: "7d" }
     );
@@ -179,17 +179,17 @@ async function renew_token(req, res, next) {
   try {
     const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY);
 
-const email = decoded.email;
-const id = decoded.id;
+// const email = decoded.email;
+// const id = decoded.userId;
 
     const newToken = jwt.sign(
-      { email: email, id: id },
+      { email: decoded.email, userId: idecoded.userIdd },
       process.env.JWT_KEY,
       { expiresIn: "1h" }
     );
 
-    const newRefreshToken = jwt.sign(
-      { email: email, id: id },
+    const newRefreshToken = userId.sign(
+      { email: decoded.email, id: decoded.userId },
       process.env.JWT_REFRESH_KEY,
       { expiresIn: "7d" }
     );
@@ -216,7 +216,7 @@ async function delete_user(req, res, next) {
 
 
 
-    const result = await User.deleteOne({ id: id }).exec();
+    const result = await User.deleteOne({ _id: id }).exec();
     if (result.deletedCount > 0) {
       res.status(200).json({ message: "User deleted" });
     } else {

@@ -8,11 +8,15 @@ const passport = require('passport');
 const session = require('express-session');
 const path = require("path");
 
+
+const crypto = require('crypto');
+const secret = crypto.randomBytes(64).toString('hex');
+console.log(secret);
+
 const connectDB = require("./configs/db");
 const app = express();
 require('./configs/passport');
 
-app.use(cors());
 
 const userRouter = require('./routes/user');
 const productsRouter = require("./routes/products");
@@ -23,6 +27,7 @@ const blogsRouter = require('./routes/blogs');
 connectDB();
 
 // Middlewares
+app.use(cors());
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -39,24 +44,7 @@ app.use("/user", userRouter);
 app.use("/products", productsRouter);
 app.use("/blogs", blogsRouter);
 
-
-app.use(express.static(path.join(__dirname, "../public")));
-
-
-
-
-app.get('/profile', (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.redirect('/auth/google');
-  } 
-  res.send(`Hello, ${req.user.displayName}`);
-});
-
-app.get('/logout', (req, res) => {
-  req.logout();
-  res.redirect('/');
-});
-
+ 
 
 // Root route
 app.get("/", (req, res) => {

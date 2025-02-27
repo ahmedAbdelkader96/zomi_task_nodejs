@@ -35,11 +35,11 @@ async function get_products(req, res, next) {
 
 async function get_product(req, res, next) {
 
-  const id = req.query.id;
+  const id = req.params.id;
 
-  if (!id) {
-    return res.status(400).json({ message: "ID parameter is required" });
-  }
+  // if (!id) {
+  //   return res.status(400).json({ message: "ID parameter is required" });
+  // }
 
  
 
@@ -105,15 +105,17 @@ async function update_product(req, res, next) {
 
 
 
-  const id = req.body.id;
+  const id = req.params.id;
+
+
   const name = req.body.name;
   const price = req.body.price;
   const image = req.body.image;
 
 
-  if (!id) {
-    return res.status(400).json({ message: "ID parameter is required" });
-  }
+  // if (!id) {
+  //   return res.status(400).json({ message: "ID parameter is required" });
+  // }
   if (!name && !price && !image) {
     return res.status(400).json({ message: "You must provide at least one param to update(name,price,image)" });
   }
@@ -144,11 +146,11 @@ async function update_product(req, res, next) {
 }
 
 async function delete_product(req, res, next) {
-  const id = req.body.id;
+  const id = req.params.id;
 
-  if (!id) {
-    return res.status(400).json({ message: "ID parameter is required" });
-  }
+  // if (!id) {
+  //   return res.status(400).json({ message: "ID parameter is required" });
+  // }
 
   Product.findByIdAndDelete(id)
     .exec()

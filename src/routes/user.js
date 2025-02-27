@@ -70,6 +70,6 @@ router.get('/login/google/callback',
 
 router.post('/renew_token', UserController.renew_token);
 
-router.delete("/",  UserController.delete_user);
+router.delete("/:id", checkAuth,  UserController.delete_user);
 
 module.exports = router;

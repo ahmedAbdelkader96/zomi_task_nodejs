@@ -208,11 +208,11 @@ async function renew_token(req, res, next) {
 
 async function delete_user(req, res, next) {
   try {
-    const id = req.body.id;
+    const id = req.params.id;
 
-    if (!id) {
-      return res.status(400).json({ message: "UserId is required" });
-    }
+    // if (!id) {
+    //   return res.status(400).json({ message: "UserId is required" });
+    // }
 
 
 

@@ -34,11 +34,11 @@ async function get_blogs(req, res, next) {
 }
 
 async function get_blog(req, res, next) {
-  const id = req.query.id;
+  const id = req.params.id;
 
-  if (!id) {
-    return res.status(400).json({ message: "ID parameter is required" });
-  }
+  // if (!id) {
+  //   return res.status(400).json({ message: "ID parameter is required" });
+  // }
 
   Blog.findById(id)
     .exec()
@@ -104,17 +104,20 @@ async function create_blog(req, res, next) {
 }
 
 async function update_blog(req, res, next) {
-  const id = req.body.id;
-  const title = req.body.title;
-  const describtion = req.body.describtion;
-  const date = req.body.date;
-  const image = req.body.image;
+  const id = req.params.id;
+
+  // const title = req.body.title;
+  // const describtion = req.body.describtion;
+  // const date = req.body.date;
+  // const image = req.body.image;
+  const { title, description, date, image } = req.body;
 
 
-  if (!id) {
-    return res.status(400).json({ message: "ID parameter is required" });
-  }
-  if (!title && !describtion && !date && !image) {
+
+  // if (!id) {
+  //   return res.status(400).json({ message: "ID parameter is required" });
+  // }
+  if (!title && !description && !date && !image) {
     return res.status(400).json({ message: "You must provide at least one param to update(title,describtion,date,image)" });
   }
 
@@ -144,12 +147,12 @@ async function update_blog(req, res, next) {
 }
 
 async function delete_blog(req, res, next) {
-  const id = req.body.id;
+  const id = req.params.id;
  
 
-  if (!id) {
-    return res.status(400).json({ message: "ID parameter is required" });
-  }
+  // if (!id) {
+  //   return res.status(400).json({ message: "ID parameter is required" });
+  // }
 
   Blog.findByIdAndDelete(id)
     .exec()

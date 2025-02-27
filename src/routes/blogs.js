@@ -7,15 +7,15 @@ const checkAuth = require('../middlewares/check-auth');
 router.get("/", checkAuth,   controller.get_blogs);
 
 /* GET custom blog. */
-router.get("/",checkAuth, controller.get_blog);
+router.get("/:id",checkAuth, controller.get_blog);
 
 /* POST Create blog */
 router.post("/" , checkAuth, controller.create_blog);
 
 /* Update custom blog */
-router.patch("/" ,checkAuth,  controller.update_blog);
+router.patch("/:id" ,checkAuth,  controller.update_blog);
 
 /* DELETE custom blog */
-router.delete("/" , checkAuth, controller.delete_blog);
+router.delete("/:id" , checkAuth, controller.delete_blog);
 
 module.exports = router;

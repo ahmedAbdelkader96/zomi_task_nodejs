@@ -61,7 +61,7 @@ async function sign_google(req, res, next) {
 
       return res
         .status(200)
-        .json({ user: userObject, token: token, refreshToken: refreshToken });
+        .json({ isNew:false, user: userObject, token: token, refreshToken: refreshToken });
     } else {
       const id = new mongoose.Types.ObjectId();
 
@@ -91,7 +91,7 @@ async function sign_google(req, res, next) {
       );
       return res
         .status(200)
-        .json({ user: userObject, token: token, refreshToken: refreshToken });
+        .json({isNew:true, user: userObject, token: token, refreshToken: refreshToken });
     }
   } catch (err) {
     console.log(err);
